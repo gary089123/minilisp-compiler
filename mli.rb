@@ -1,8 +1,23 @@
 require './scanner'
 require './Stack'
+require './action'
 
-input = "(define y (+ 1 2 3))if"
+
+first = ARGV
+input = "(+ 2 (/ 10 3 ))"
 my_lexer = Scanner.new
 output = my_lexer.lex(input)
-output.each{|lexer, token| p token}
+
+stack= Stack.new
+
+output.each do |lexer, token|
+
+  if token == ")"
+    stack=dostack(stack)
+    stack.push(doaction)
+    p stack.peek
+  else
+    stack.push(token)
+  end
+end
 
