@@ -4,7 +4,7 @@ require './action'
 
 
 first = ARGV
-input = "(+ 2 (/ 10 3 ))"
+input = "(> 13 2 )"
 my_lexer = Scanner.new
 output = my_lexer.lex(input)
 
