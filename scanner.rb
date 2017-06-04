@@ -18,10 +18,13 @@ class Scanner < Lex::Lexer
       :FUN,
       :IF,
       :BL,
-      :SL
+      :SL,
+      :TF
   )
 
   # Regular expression rules for simple tokens
+  rule(:DEFINE, /define/)
+  rule(:IF,     /if/)
   rule(:PLUS,   /\+/)
   rule(:MINUS,  /\-/)
   rule(:TIMES,  /\*/)
@@ -34,11 +37,10 @@ class Scanner < Lex::Lexer
   rule(:AND,    /and/)
   rule(:OR,     /or/)
   rule(:NOT,    /not/)
-  rule(:DEFINE, /define/)
   rule(:FUN,    /fun/)
   rule(:BL,     /\>/)
   rule(:SL,     /\</)
-
+  rule(:TF,     /#[t|f]/)
 
 
   # A regular expression rules with actions
@@ -59,5 +61,3 @@ class Scanner < Lex::Lexer
     puts "Illegal character #{token.value}"
   end
 end
-
-# build the lexer

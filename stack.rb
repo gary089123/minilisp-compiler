@@ -1,4 +1,20 @@
 
+class Pair
+  def initialize(lexer,token)
+    @token=token
+    @lexer=lexer
+  end
+
+  def lexer
+    return @lexer
+  end
+
+  def token
+    return @token
+  end
+end
+
+
 class Stack
 
   def initialize
@@ -21,23 +37,10 @@ class Stack
   end
 
 
-  def search(token)
-    p @stack
-    for i in 1..@stack.length
-      if @stack[@stack.length-i+1]==token
-        return @stack.length+1-i
-      end
-    end
-    return "fail"
-  end
-
-  def next(i)
-    return @stack[i+1]
-  end
-
   def size
     return @stack.length
   end
 
-
 end
+
+

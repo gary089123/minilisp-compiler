@@ -1,42 +1,44 @@
 require './stack'
 
+map = Hash.new()
+
 def plus
-  result = @actionstack.pop
+  result = @actionstack.pop.token
   while @actionstack.size!=0
-    result=result+@actionstack.pop
+    result=result+@actionstack.pop.token
   end
   return result
 end
 
 def minus
-  result = @actionstack.pop
-  result = result-@actionstack.pop
+  result = @actionstack.pop.token
+  result = result-@actionstack.pop.token
   return result
 end
 
 def multi
-  result = @actionstack.pop
+  result = @actionstack.pop.token
   while @actionstack.size!=0
-    result=result*@actionstack.pop
+    result=result*@actionstack.pop.token
   end
   return result
 end
 
 def div
-  result = @actionstack.pop
-  result = result/@actionstack.pop
+  result = @actionstack.pop.token
+  result = result/@actionstack.pop.token
   return result
 end
 
 def mod
-  result = @actionstack.pop
-  result = result%@actionstack.pop
+  result = @actionstack.pop.token
+  result = result%@actionstack.pop.token
   return result
 end
 
 def bl
-  result = @actionstack.pop
-  if result>@actionstack.pop
+  result = @actionstack.pop.token
+  if result>@actionstack.pop.token
     return "#t"
   else
     return "#f"
@@ -44,8 +46,8 @@ def bl
 end
 
 def sl
-  result = @actionstack.pop
-  if result<@actionstack.pop
+  result = @actionstack.pop.token
+  if result<@actionstack.pop.token
     return "#t"
   else
     return "#f"
@@ -55,20 +57,68 @@ end
 def equal
 
   result = "#t"
-  temp=@actionstack.pop
+  temp=@actionstack.pop.token
   while @actionstack.size!=0
-    if @actionstack.pop!=temp
+    if @actionstack.pop.token!=temp
       result = "#f"
     end
   end
   return result
 end
 
+def andf
+  result = "#t"
+  while @actionstack.size!=0
+    if @actionstack.pop.token=="#f"
+      result = "#f"
+    end
+  end
+  return result
+end
+
+def orf
+  result = "#f"
+  while @actionstack.size!=0
+    if @actionstack.pop.token=="#t"
+      result = "#t"
+    end
+  end
+  return result
+end
+
+def notf
+  result = @actionstack.pop.token
+  if result=="#t"
+    result="#f"
+  else
+    result="#t"
+  end
+  return result
+end
+
+def iff
+  result = @actionstack.pop.token
+  if result=="#t"
+    result=@actionstack.pop.token
+  else
+    @actionstack.pop
+    result = @actionstack.pop.token
+  end
+  return result
+end
+
+def define
+  result = @actionstack.pop.token
+  value =@actionstack.pop.token
+  map[result]=value
+end
+
 def dostack(stack)
   @actionstack=Stack.new
   while
     token=stack.pop
-    if token=="("
+    #p token
+    if token.token=="("
       break
     else
       @actionstack.push(token)
@@ -79,26 +129,32 @@ end
 
 
 def doaction
-  case @actionstack.pop
+  case  @actionstack.pop.token
     when "+"
-      return plus
+      return Pair.new(":NUMBER",plus)
     when "-"
-      return minus
+      return Pair.new(":NUMBER",minus)
     when "*"
-      return multi
+      return Pair.new(":NUMBER",multi)
     when "/"
-      return div
+      return Pair.new(":NUMBER",div)
     when "mod"
-      return mod
+      return Pair.new(":NUMBER",mod)
     when ">"
-      return bl
+      return Pair.new(":TF",bl)
     when "<"
-      return sl
+      return Pair.new(":TF",sl)
     when "="
-      return equal
+      return Pair.new(":TF",equal)
+    when "and"
+      return Pair.new(":TF",andf)
+    when "or"
+      return Pair.new(":TF",orf)
+    when "not"
+      return Pair.new(":TF",orf)
+    when "if"
+      return iff
+    when "define"
+      return define
   end
-
-
-
-  return token
 end
