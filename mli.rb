@@ -3,22 +3,33 @@ require './Stack'
 require './action'
 
 
-
+counter=0
 first = ARGV
-input = "(+ (+ 3 3) (/ 2 2))"
+input = "(print-num 3)"
 my_lexer = Scanner.new
 output = my_lexer.lex(input)
-
 stack= Stack.new
 output.each do |lexer, token|
 
   pair = Pair.new(lexer,token)
-  p pair.lexer
+  if token=="("
+    counter=counter+1
+  end
+
+  #p pair.lexer
   if token == ")"
+    counter=counter-1
     stack=dostack(stack)
 
-    stack.push(doaction)
-    p stack.peek.token
+    a=doaction
+    if a!=false
+      stack.push(a)
+    end
+
+    if counter==0 && stack!=nil
+      p stack.pop.token
+    end
+
   else
     stack.push(pair)
   end

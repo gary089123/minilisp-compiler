@@ -1,6 +1,6 @@
 require './stack'
 
-map = Hash.new()
+@@map = Hash.new()
 
 def plus
   result = @actionstack.pop.token
@@ -109,14 +109,23 @@ end
 
 def define
   result = @actionstack.pop.token
-  value =@actionstack.pop.token
-  map[result]=value
+  value =@actionstack.pop
+  @@map[result]=value
+end
+
+def printfun
+  result = @actionstack.pop.token
+  return result
 end
 
 def dostack(stack)
+  #p stack
+  #p "aaa"
   @actionstack=Stack.new
   while
     token=stack.pop
+    #p token
+    #p "-------"
     #p token
     if token.token=="("
       break
@@ -124,6 +133,8 @@ def dostack(stack)
       @actionstack.push(token)
     end
   end
+  #p @actionstack
+  #p "asd"
   return stack
 end
 
@@ -152,9 +163,14 @@ def doaction
       return Pair.new(":TF",orf)
     when "not"
       return Pair.new(":TF",orf)
+    when "print-num"
+      return Pair.new(":NUMBER" ,printfun)
+    when "print-bool"
+      return Pair.new(":NUMBER" ,printfun)
     when "if"
       return iff
     when "define"
-      return define
+      define
+      return false
   end
 end

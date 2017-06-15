@@ -1,4 +1,3 @@
-
 class Pair
   def initialize(lexer,token)
     @token=token
@@ -29,6 +28,13 @@ class Stack
   def pop
     object=@stack[@stack.length]
     @stack.delete(@stack.length)
+
+    if object.lexer==:ID
+      #p "qwe"
+      #p @@map
+      object=@@map[object.token]
+    end
+    #p object
     return object
   end
 

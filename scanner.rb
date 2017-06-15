@@ -33,7 +33,6 @@ class Scanner < Lex::Lexer
   rule(:LPAREN, /\(/)
   rule(:RPAREN, /\)/)
   rule(:EQUALS, /\=/)
-  rule(:ID,     /[a-z][a-z0-9\-]*/)
   rule(:AND,    /and/)
   rule(:OR,     /or/)
   rule(:NOT,    /not/)
@@ -41,6 +40,7 @@ class Scanner < Lex::Lexer
   rule(:BL,     /\>/)
   rule(:SL,     /\</)
   rule(:TF,     /#[t|f]/)
+  rule(:ID,     /[a-z][a-z0-9\-]*/)
 
 
   # A regular expression rules with actions
