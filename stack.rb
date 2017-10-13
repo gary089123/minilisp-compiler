@@ -18,6 +18,7 @@ class Stack
 
   def initialize
     @stack=Hash.new()
+    @define_flag==false
   end
 
   def push(object)
@@ -28,12 +29,13 @@ class Stack
   def pop
     object=@stack[@stack.length]
     @stack.delete(@stack.length)
-
-    if object.lexer==:ID
-      #p "qwe"
-      #p @@map
-      object=@@map[object.token]
-    end
+    
+    #p object
+    #if object.lexer==:ID && @define_flag==false
+    #  p "qwe"
+    #  p @@map
+    #  object=@@map[object.token]
+    #end
     #p object
     return object
   end
@@ -47,6 +49,9 @@ class Stack
     return @stack.length
   end
 
+  def def_flag(flag)
+    @define_flag=flag
+  end
 end
 
 

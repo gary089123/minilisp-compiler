@@ -44,7 +44,7 @@ class Scanner < Lex::Lexer
 
 
   # A regular expression rules with actions
-  rule(:NUMBER, /[0-9]+/) do |lexer, token|
+  rule(:NUMBER, /-?[0-9]+/) do |lexer, token|
     token.value = token.value.to_i
     token
   end

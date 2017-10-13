@@ -1,22 +1,48 @@
 require './stack'
 
-@@map = Hash.new()
+#@@map=Hash.new()
+
 
 def plus
+  if @actionstack.peek==nil
+    puts "syntax error"
+    exit(0)
+  end
   result = @actionstack.pop.token
   while @actionstack.size!=0
-    result=result+@actionstack.pop.token
+    a=@actionstack.pop
+    if (a.lexer!=:NUMBER && a.lexer !=":NUMBER")
+      p a
+      puts "syntax error"
+      exit(0)
+    end
+    result=result+a.token
   end
   return result
 end
 
 def minus
-  result = @actionstack.pop.token
-  result = result-@actionstack.pop.token
+  if @actionstack.peek==nil
+    puts "syntax error"
+    exit(0)
+  end
+  a=@actionstack.pop
+
+  result = a.token
+  a=@actionstack.pop
+  if (a.lexer!=:NUMBER && a.lexer !=":NUMBER")
+    puts "syntax error"
+    exit(0)
+  end
+  result = result- a.token
   return result
 end
 
 def multi
+  if @actionstack.peek==nil
+    puts "syntax error"
+    exit(0)
+  end
   result = @actionstack.pop.token
   while @actionstack.size!=0
     result=result*@actionstack.pop.token
@@ -25,6 +51,10 @@ def multi
 end
 
 def div
+  if @actionstack.peek==nil
+    puts "syntax error"
+    exit(0)
+  end
   result = @actionstack.pop.token
   result = result/@actionstack.pop.token
   return result
@@ -107,20 +137,23 @@ def iff
   return result
 end
 
-def define
+def definef
+  @actionstack.def_flag(true)
   result = @actionstack.pop.token
   value =@actionstack.pop
   @@map[result]=value
+  p @@map
+  @actionstack.def_flag(false)
 end
 
 def printfun
   result = @actionstack.pop.token
+  p result
   return result
 end
 
 def dostack(stack)
-  #p stack
-  #p "aaa"
+
   @actionstack=Stack.new
   while
     token=stack.pop
@@ -168,9 +201,10 @@ def doaction
     when "print-bool"
       return Pair.new(":NUMBER" ,printfun)
     when "if"
-      return iff
+      return Pair.new(":NULL", iff)
     when "define"
-      define
+      definef
+      #p "123123"
       return false
   end
 end

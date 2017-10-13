@@ -5,10 +5,12 @@ require './action'
 
 counter=0
 first = ARGV
-input = "(print-num 3)"
+input = gets
 my_lexer = Scanner.new
 output = my_lexer.lex(input)
 stack= Stack.new
+
+
 output.each do |lexer, token|
 
   pair = Pair.new(lexer,token)
@@ -22,12 +24,12 @@ output.each do |lexer, token|
     stack=dostack(stack)
 
     a=doaction
-    if a!=false
+    #if a!=false
       stack.push(a)
-    end
+    #end
 
-    if counter==0 && stack!=nil
-      p stack.pop.token
+    if counter==0 && stack.peek!=nil
+       stack.pop.token
     end
 
   else

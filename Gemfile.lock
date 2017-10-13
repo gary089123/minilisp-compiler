@@ -1,0 +1,12 @@
+GEM
+  specs:
+    lex (0.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  lex
+
+BUNDLED WITH
+   1.14.4
